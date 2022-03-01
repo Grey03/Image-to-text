@@ -64,4 +64,7 @@ def ImToTxt(*args):
       for x in range(len(temp[0])):
         f.write(str(temp[y][x]))
   temp = []
+  temp2 = []
+  img = []
+  name = []
   print ("Done!")
