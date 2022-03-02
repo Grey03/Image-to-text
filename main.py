@@ -65,25 +65,25 @@ def ImToTxt():
       #will be [a, b, c, d, e, f]
       #should be [f,d,b,e,c,a]
       #then make it into binary
-      temp = ""
+      temp = ("")
       for n in range(len(chunklist)):
         if chunklist[n] > contrastsetting:
-          chunklist[n] = 1
-        else:
           chunklist[n] = 0
+        else:
+          chunklist[n] = 1
           
       for i in range(len(chunklist)):
-        temp.join(chunklist[i])
-      temp = int(temp)
+        temp = (str(temp) + str(chunklist[i]))
+      temp = int(temp,2)
       return numtobraille(temp)
-      
       
     print ("Generating Text...")    
     temp = []
-    for y in range(img.size[1],3):
+    temp2 = []
+    for y in range(0,img.size[1],3):
+      temp.append(temp2)  
       temp2 = []
-      temp.append(temp2)
-      for x in range(img.size[0],2):
+      for x in range(0,img.size[0],2):
         chunk = [
           (img.getpixel((x,y))),
           (img.getpixel((x + 1,y))),
@@ -92,14 +92,15 @@ def ImToTxt():
           (img.getpixel((x,y + 2))),
           (img.getpixel((x + 1,y + 2)))
         ]
-        temp2 = ChunkAnalyzer(chunk,contrastsetting)
-        
-    temp2 = []
+        temp2.append(ChunkAnalyzer(chunk,contrastsetting)) 
     print ("Text Generated...")
-    return temp
-    temp = []
+    return (temp)
+    
+    
+      
   
   def sendtofile(temp):
+    temp.pop(0)
     print ("Writing to output.txt...")
     with open("output.txt", "w") as f:
       for y in range(len(temp)):
@@ -117,12 +118,17 @@ def ImToTxt():
   img.save(name)
   img = Image.open(name)
 
+  decide = input("Would you like to change the final dimensions y/n: ").lower()
+  if decide == "y":
+    x = int(input("Enter Final x: "))
+    y = int(input("Enter Final y: "))
+    img = img.resize((x*2,y*3))
+    
   img = imgresizer(img)
   img.save(name)
   contrastsetting = contrast()
- 
- 
-  temp = createarrays(img,contrastsetting,mats)
+
+  temp = createarrays(img, contrastsetting)
   sendtofile(temp)        
   print ("Done!")
   
