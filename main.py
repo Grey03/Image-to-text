@@ -3,6 +3,8 @@
 #https://home.unicode.org/
 #https://www.tutorialspoint.com/working-with-images-in-python
 #https://www.geeksforgeeks.org/python-pil-getpixel-method/
+global Invert 
+Invert = int
 from PIL import Image
 import math
 
@@ -49,6 +51,7 @@ def ImToTxt():
       #temp
       #use 2x3 braille for now
     def ChunkAnalyzer(chunklist,contrast):
+      global Invert
       chunklist = [
         chunklist[5],
         chunklist[3],
@@ -68,9 +71,9 @@ def ImToTxt():
       temp = ("")
       for n in range(len(chunklist)):
         if chunklist[n] > contrastsetting:
-          chunklist[n] = 0
+          chunklist[n] = 1 - Invert
         else:
-          chunklist[n] = 1
+          chunklist[n] = 0 + Invert
           
       for i in range(len(chunklist)):
         temp = (str(temp) + str(chunklist[i]))
@@ -121,9 +124,16 @@ def ImToTxt():
   decide = input("Would you like to change the final dimensions y/n: ").lower()
   if decide == "y":
     x = int(input("Enter Final x: "))
-    y = int(input("Enter Final y: "))
+    y = int(input("Enter Final y: ")) + 1
     img = img.resize((x*2,y*3))
+  decide2 = input("Would you like to invert the colors y/n: ").lower()
+  if decide2 == "y":
+    global Invert
+    Invert = 1
+  else:
+    Invert = 0
     
+  
   img = imgresizer(img)
   img.save(name)
   contrastsetting = contrast()

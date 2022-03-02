@@ -49,3 +49,8 @@ Result
 
 then it makes all these chunks into arrays of arrays as shown earlier
 and adds it to the output file
+
+Extra info
+Lower Contrasts will pick up more white
+Higher will pick up more dark
+I recommend using 128 to start and then going either direction if you want more detail
