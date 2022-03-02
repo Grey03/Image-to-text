@@ -54,3 +54,4 @@ Extra info
 Lower Contrasts will pick up more white
 Higher will pick up more dark
 I recommend using 128 to start and then going either direction if you want more detail
+If the image is lighter use a higher contrast if its darker use a lower contrast
