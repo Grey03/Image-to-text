@@ -33,36 +33,71 @@ def ImToTxt():
     print ("Resizing Image...")
     while img.size[0] * img.size[1] > 1000000:
       img = img.resize((math.ceil(img.size[0]/2),math.ceil(img.size[1]/2)))
+      
     #Only use in braile version
-    #while img.size[0]%2 != 0:
-      #img = img.resize((img.size[0]-1, img.size[1]))
-    #while img.size[1]%4 != 0:
-      #img = img.resize((img.size[0], img.size[1]-1))
+    while img.size[0]%2 != 0:
+      img = img.resize((img.size[0]-1, img.size[1]))
+    while img.size[1]%3 != 0:
+      img = img.resize((img.size[0], img.size[1]-1))
     print ("Image resized...")
     return img
   
-  def createarrays(img,contrastsetting,mats):
-    print ("Generating Text...")
-    inverse = input("Would you like to inverse the color scheme y/n : ").lower()
-    if inverse == "y":
-      Material1 = mats[0]
-      Material2 = mats[1]
-    else:
-      Material1 = mats[1]
-      Material2 = mats[0]
+  def createarrays(img,contrastsetting):
+    def numtobraille(number):
+      number = (number + 10240)
+      return chr(number)
+      #temp
+      #use 2x3 braille for now
+    def ChunkAnalyzer(chunklist,contrast):
+      chunklist = [
+        chunklist[5],
+        chunklist[3],
+        chunklist[1],
+        chunklist[4],
+        chunklist[2],
+        chunklist[0]
+      ]
+      #should come in as # top to bottom left to right
+      #example 
+      #a b
+      #c d
+      #e f
+      #will be [a, b, c, d, e, f]
+      #should be [f,d,b,e,c,a]
+      #then make it into binary
+      temp = ""
+      for n in range(len(chunklist)):
+        if chunklist[n] > contrastsetting:
+          chunklist[n] = 1
+        else:
+          chunklist[n] = 0
+          
+      for i in range(len(chunklist)):
+        temp.join(chunklist[i])
+      temp = int(temp)
+      return numtobraille(temp)
       
+      
+    print ("Generating Text...")    
     temp = []
-    for y in range(img.size[1]):
+    for y in range(img.size[1],3):
       temp2 = []
       temp.append(temp2)
-      for x in range(img.size[0]):
-        if ((img.getpixel((x,y))) > contrastsetting):
-          temp2.append(Material1)
-        else:
-          temp2.append(Material2)
+      for x in range(img.size[0],2):
+        chunk = [
+          (img.getpixel((x,y))),
+          (img.getpixel((x + 1,y))),
+          (img.getpixel((x,y + 1))),
+          (img.getpixel((x + 1,y + 1))),
+          (img.getpixel((x,y + 2))),
+          (img.getpixel((x + 1,y + 2)))
+        ]
+        temp2 = ChunkAnalyzer(chunk,contrastsetting)
+        
     temp2 = []
     print ("Text Generated...")
     return temp
+    temp = []
   
   def sendtofile(temp):
     print ("Writing to output.txt...")
@@ -76,25 +111,17 @@ def ImToTxt():
 
   name = input("Enter Image Name\nExample (test.png)\n: ")
   print ("")
-  dia = input("Would you like to set a diameter? y/n : ").lower() 
+ 
   img = Image.open(name).convert("L")
   name = nameconverter(name)
   img.save(name)
   img = Image.open(name)
-  if dia == "y":
-    newx = int(input("Enter the x size: "))
-    newy = int(input("Enter the y size: "))
-    img = img.resize((newx,newy))
+
   img = imgresizer(img)
   img.save(name)
   contrastsetting = contrast()
-  changemat = input("Change materials? y/n : ").lower()
-  if changemat == "y":
-    mat1 = input("Enter the first material: ")
-    mat2 = input("Enter the second material: ")
-    mats = [mat1,mat2]    
-  else:
-    mats = ["⬛","⬜"]
+ 
+ 
   temp = createarrays(img,contrastsetting,mats)
   sendtofile(temp)        
   print ("Done!")
