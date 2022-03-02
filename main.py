@@ -38,9 +38,9 @@ def ImToTxt():
       
     #Only use in braile version
     while img.size[0]%2 != 0:
-      img = img.resize((img.size[0]-1, img.size[1]))
+      img = img.resize((img.size[0]+1, img.size[1]))
     while img.size[1]%3 != 0:
-      img = img.resize((img.size[0], img.size[1]-1))
+      img = img.resize((img.size[0], img.size[1]+1))
     print ("Image resized...")
     return img
   
@@ -98,9 +98,6 @@ def ImToTxt():
         temp2.append(ChunkAnalyzer(chunk,contrastsetting)) 
     print ("Text Generated...")
     return (temp)
-    
-    
-      
   
   def sendtofile(temp):
     temp.pop(0)
