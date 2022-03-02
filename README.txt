@@ -1,6 +1,11 @@
 Do not touch anything unless I say so dummy!
 This is my code if you want to use parts of it thats fine but if you want to use the whole thing credit me please.
 
+If you think your image looks weird heres why.
+1. Could be my code
+2. Try zooming out on what you are using. Things like .txt are strange and format text weirdly sometimes. If it looks like lines are not the same size I garuntee that isn't the code its whatever you are using.
+3. Did you use the resize? It does not change the image the way you think. It makes the final product have those many letters. If you want it to lets say be 60 by 60 pixels you would actually enter 30 for the x and 20 for the y. This is because the braille is 2x3 so if you want a 60x60 pixel image perfectly like that, do that.
+
 Instructions!
 1. Find some sort of image you would like to convert!
 2. Put it in the folder this readme is in
